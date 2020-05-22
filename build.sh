@@ -5,7 +5,7 @@ DIR=$(dirname "${REALPATH}")
 test -d output || mkdir output
 mkdir /toolchains
 
-sed '/^#/d' < "${DIR}/archs" | while read arch; do
+sed '/^#/d' < "${DIR}/archs" | while read -r arch; do
     echo "TARGET = $arch" > config.mak
     echo "OUTPUT = /usr" >> config.mak
     cat << EOF >/toolchains/${arch}.cmake
@@ -19,7 +19,7 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 EOF
-    make install
+    make -j4 install
 done
 
 function make_link(){
